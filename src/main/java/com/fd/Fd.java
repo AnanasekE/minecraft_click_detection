@@ -27,19 +27,12 @@ public class Fd implements ModInitializer {
         LOGGER.info("Hello Fabric world!");
 
         // right click detection
-        AtomicReference<Boolean> ItemUseCooldown = new AtomicReference<>(true);
         UseItemCallback.EVENT.register((player, world, hand) -> {
-            if (ItemUseCooldown.get()) {
-                // here add your code
-                LOGGER.info("Player " + player.getName().getString() + " used " + player.getStackInHand(player.preferredHand).getName());
-                player.sendMessage(Text.of("Player " + player.getName() + " used " + player.getStackInHand(player.preferredHand).getName()), false);
-                player.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.3F, 1.0F);
 
-                // leave next line
-                ItemUseCooldown.set(false);
-            } else {
-                ItemUseCooldown.set(true);
-            }
+            LOGGER.info("Player " + player.getName().getString() + " used " + player.getStackInHand(player.preferredHand).getName());
+            player.sendMessage(Text.of("Player " + player.getName() + " used " + player.getStackInHand(player.preferredHand).getName()), false);
+            player.playSound(SoundEvents.BLOCK_FIRE_EXTINGUISH, 0.3F, 1.0F);
+
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
         // left click detection
