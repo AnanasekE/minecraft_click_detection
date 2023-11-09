@@ -35,6 +35,7 @@ public class Fd implements ModInitializer {
 
             return TypedActionResult.pass(player.getStackInHand(hand));
         });
+
         // left click detection
         AtomicReference<Boolean> handSwingCooldown = new AtomicReference<>(false);
         ServerTickEvents.START_SERVER_TICK.register(server -> server.getPlayerManager().getPlayerList().forEach(player -> {
