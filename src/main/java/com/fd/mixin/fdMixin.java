@@ -4,27 +4,21 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import com.fd.Fd;
+import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import javax.swing.text.html.parser.Entity;
 
-@Mixin(Entity.class)
+@Mixin(PlayerEntity.class)
 public class fdMixin {
-    @ModifyVariable(
-            method = "setPose",
-            at = @At(
-                    value = "LOAD"
-            ),
-            argsOnly = true
-    )
-    private EntityPose testMod$onlyChangePoseIfAllowed(final EntityPose original) {
-
-
-        if ((Object) this instanceof PlayerEntity player && Fd.test.get()) {
-            return EntityPose.SLEEPING;
+    @Inject(at = @At("HEAD"), method = "updatePose")
+    private void updatePose(CallbackInfo ci) {
+        if (Fd.test.get()) {
+            ((PlayerEntity) (Object) this).setPose(EntityPose.SLEEPING);
+            return;
         }
-
-        return original;
     }
 }
